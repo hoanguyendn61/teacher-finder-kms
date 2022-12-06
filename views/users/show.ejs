@@ -1,0 +1,77 @@
+<%- include ('../partials/header') %>
+
+  <div class="container" style="display: flex;">
+    <div class="container py-5 h-100"
+      style="background-color: #eee; width: 27%;margin-bottom: 20px;border-radius: 15px;">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-12 col-xl-4">
+
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body text-center">
+              <div class="mt-3 mb-4" style="margin-top: 10px;">
+                <% if(user.avatar){ %>
+                  <img src="<%= user.avatar %>" alt="user profile image" style="width: 150px;" />
+                  <% } else { %>
+                    <img src="/assets/default_profile_img.png" alt="user profile image" style="width: 150px;" />
+                    <% } %>
+              </div>
+              <h4 class="mb-2">
+                <%= user.firstName %>
+                  <%= user.lastName %>
+              </h4>
+              <p class="text-muted mb-4">@Student <span class="mx-2">|</span>
+                <a href="mailto:<%= user.email %>">
+                  <%= user.email %>
+                </a>
+              </p>
+              <div class="mb-4 pb-2">
+                <button type="button" class="btn btn-outline-primary btn-floating">
+                  <a href="#"><i class="fa fa-facebook"></i></a>
+                </button>
+                <button type="button" class="btn btn-outline-primary btn-floating">
+                  <a href="#"><i class="fa fa-twitter"></i></a>
+                </button>
+                <button type="button" class="btn btn-outline-primary btn-floating">
+                  <a href="#"><i class="fa fa-skype"></i></a>
+                </button>
+              </div>
+              <div class="thumbnail" style="background-color: #eee; border: 0.1px solid rgb(91, 85, 85) ;">
+                <h4 class="text-center"><strong>Description</strong></h4>
+                <hr style="width: 85%; margin-top: 3%; border: 0.1px solid rgb(91, 85, 85);" />
+                <p style="margin-left: 5%">
+                  <%= user.about %>
+                </p>
+              </div>
+              <% if((currentUser && currentUser.username==user.username)) { %>
+                <div class="text-center" style="margin-bottom: 10px;">
+                  <a class="btn btn-info" href="/users/<%= user._id %>/edit">Edit Profile</a>
+                </div>
+                <!--<form id="delete-form" action="/teachers/<%= user._id %>?_method=DELETE" method="POST">-->
+                <!--    <button class="btn btn-xs btn-danger">Delete</button>-->
+                <!--</form>-->
+                <% } %>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <h3>
+        <%= user.username %>'s resume:
+      </h3>
+
+      <ul>
+        <% if(teachers.length !=0) { teachers.forEach(function(teachers) { %>
+          <li><a href="/teachers/<%= teachers.id %>">
+              <%= teachers.name %>
+            </a></li>
+          <% }); } else { %>
+            <p>
+              <a class="btn btn-info" href="/teachers/new">+ Add</a>
+            </p>
+            <% } %>
+      </ul>
+    </div>
+  </div>
+    <%- include ('../partials/footer') %>
