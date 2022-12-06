@@ -1,0 +1,116 @@
+<%- include ('../partials/header') %>
+<style type="text/css">
+  .vertical-center {
+    border: none;
+    background-image: url("https://i.idol.st/u/background/aTZNH2Background-q70suG.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-position-y: -400px;
+    color: rgb(255, 255, 255);
+    position: relative;
+    height: 300px;
+  }
+  .form-control-custom {
+    width: 400px !important;
+  }
+  .thumbnail {
+    background-color: #fbfbfb;
+    color: rgb(0, 0, 0);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 3px solid #5bc0df;
+  }
+
+  .thumbnail img {
+    height: 200px;
+    object-fit: cover;
+  }
+  .caption {
+    color: rgb(0, 0, 0) !important;
+  }
+  .fa.far.fa-star,
+  .fa.fa-star.checked {
+    color: rgb(244, 218, 47);
+  }
+  .black {
+    position: absolute;
+    background-color: black;
+    opacity: 0.3;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 0;
+  }
+  .black-over {
+    position: absolute;
+    z-index: 999;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+</style>
+
+<div class="container">
+  <header class="jumbotron vertical-center">
+    <div class="container black-over">
+      <h1>TEACHER FINDER!</h1>
+      <p>
+        Helping students, parents and teachers make informed decisions within
+        education.
+      </p>
+      <form
+        action="/teachers"
+        method="GET"
+        class="form-inline"
+        id="Teacher-search"
+      >
+        <div class="form-group">
+          <input
+            type="text"
+            name="search"
+            placeholder="Search..."
+            class="form-control form-control-custom"
+          />
+          <input type="submit" value="Search" class="btn btn-info" />
+        </div>
+      </form>
+    </div>
+    <div class="black"></div>
+  </header>
+
+  <div style="height: 100%">
+    <div class="row text-center" style="display: flex; flex-wrap: wrap">
+      <% Teachers.forEach(function(teacher){ %>
+      <div class="col-md-3 col-sm-6">
+        <div class="thumbnail">
+          <img src="<%= teacher.image %>" />
+          <div class="caption">
+            <h4>
+              <a href="/teachers/<%= teacher.id %>"><%= teacher.name %></a>
+            </h4>
+            <% if (teacher.rating === 0) { %>
+            <em>No reviews yet.</em>
+            <% } else { %>
+            <span class="fa fa-star checked"></span>
+            <% if (teacher.rating > 1.5) { %>
+            <span class="fa fa-star checked"></span> <% } %> <% if
+            (teacher.rating > 2.5) { %>
+            <span class="fa fa-star checked"></span> <% } %> <% if
+            (teacher.rating > 3.5) { %>
+            <span class="fa fa-star checked"></span> <% } %> <% if
+            (teacher.rating > 4.5) { %>
+            <span class="fa fa-star checked"></span> <% } %> <% } %>
+          </div>
+          <p>
+            <a href="/teachers/<%= teacher._id %>" class="btn btn-info"
+              ><span class="fa far fa-star"></span> I rate!</a
+            >
+          </p>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+</div>
+<%- include ('../partials/footer') %>
