@@ -4,6 +4,9 @@
   "description": "Teacher Finder FOR KMS FINAL",
   "main": "app.js",
   "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "start:watch": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -40,6 +43,9 @@
     "passport-local-mongoose": "^7.1.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "eslint": "^8.29.0",
+    "eslint-config-prettier": "^8.5.0",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.8.0"
   }
 }
