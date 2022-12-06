@@ -12,6 +12,8 @@ const LocalStrategy = require("passport-local");
 
 const indexRoutes = require("./routes/index");
 const usersRoutes = require("./routes/users");
+const teachersRoutes = require("./routes/teachers");
+
 mongoose.connect(process.env.DATABASE_URL);
 
 app.locals.moment = require("moment");
@@ -46,6 +48,8 @@ app.use(function (req, res, next) {
 
 app.use("/", indexRoutes);
 app.use("/users", usersRoutes);
+app.use("/teachers", teachersRoutes);
+
 //=============================================================================
 //Starts the server
 
