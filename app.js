@@ -11,6 +11,7 @@ const methodOverride = require("method-override");
 const LocalStrategy = require("passport-local");
 
 const indexRoutes = require("./routes/index");
+const usersRoutes = require("./routes/users");
 mongoose.connect(process.env.DATABASE_URL);
 
 app.locals.moment = require("moment");
@@ -44,7 +45,7 @@ app.use(function (req, res, next) {
 });
 
 app.use("/", indexRoutes);
-
+app.use("/users", usersRoutes);
 //=============================================================================
 //Starts the server
 

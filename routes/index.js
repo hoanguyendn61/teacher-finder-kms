@@ -1,39 +1,13 @@
-var express = require("express");
-var router = express.Router();
-var passport = require("passport");
-var User = require("../models/user");
-var Teacher = require("../models/teacher");
-var async = require("async");
-var nodemailer = require("nodemailer");
-var crypto = require("crypto");
-var middleware = require("../middleware");
-
-//*************************
-// Image Uploader
-//*************************
-
-var multer = require("multer");
-var storage = multer.diskStorage({
-  filename: function (req, file, callback) {
-    callback(null, Date.now() + file.originalname);
-  },
-});
-var imageFilter = function (req, file, cb) {
-  // accept image files only
-  if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
-    return cb(new Error("Only image files are allowed!"), false);
-  }
-  cb(null, true);
-};
-var upload = multer({ storage: storage, fileFilter: imageFilter });
-
-var cloudinary = require("cloudinary");
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
+const express = require("express");
+const router = express.Router();
+const passport = require("passport");
+const User = require("../models/user");
+const Teacher = require("../models/teacher");
+const async = require("async");
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
+const middleware = require("../middleware");
+const { upload, cloudinary } = require("../utils/uploadImage");
 //INDEX - show all Teachers
 router.get("/", function (req, res) {
   res.render("landing");
