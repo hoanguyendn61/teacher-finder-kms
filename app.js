@@ -14,6 +14,7 @@ const indexRoutes = require("./routes/index");
 const usersRoutes = require("./routes/users");
 const teachersRoutes = require("./routes/teachers");
 const commentRoutes = require("./routes/comments");
+const adminRoutes = require("./routes/admin");
 const reviewRoutes = require("./routes/reviews");
 
 
@@ -53,6 +54,7 @@ app.use("/", indexRoutes);
 app.use("/users", usersRoutes);
 app.use("/teachers", teachersRoutes);
 app.use("/teachers/:id/comments", commentRoutes);
+app.use("/admin", adminRoutes);
 app.use("/teachers/:id/reviews", reviewRoutes);
 
 //=============================================================================
