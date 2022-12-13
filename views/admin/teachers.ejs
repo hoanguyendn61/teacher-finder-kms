@@ -1,0 +1,44 @@
+<%- include ('../partials/header') %>
+<div style="height: 80%; width: 60%; margin: 0 auto">
+  <h3>List of teachers</h3>
+  <div>
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Rating</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% teachers.forEach(function(teacher, idx){ %>
+        <tr>
+          <th scope="row"><%= idx+1 %></th>
+          <td><a href="/teachers/<%= teacher.id %>"><%= teacher.name %></a></td>
+          <td><%= teacher.phone %></td>
+          <td><%= teacher.email%></td>
+          <td><%= teacher.rating ? teacher.rating : 'No reviews yet'%></td>
+          <td>
+            <a
+              class="btn btn-warning"
+              href="/teachers/<%= teacher._id %>/edit"
+              >Edit</a
+            >
+            <form
+              id="delete-form"
+              action="/teachers/<%= teacher._id %>?_method=DELETE"
+              method="POST"
+            >
+              <button class="btn btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<%- include ('../partials/footer') %>
