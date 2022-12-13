@@ -68,18 +68,17 @@ middlewareObj.isLoggedIn = function (req, res, next) {
         res.redirect("/");
       }
 
-      // if (!req.user.isVerified) {
-      //     req.flash("error", "You need to verify your e-mail before posting.");
-      // }
+      if (!req.user.isVerified) {
+        req.flash("error", "You need to verify your e-mail before posting.");
+      }
     });
 
-    // if (req.user.isVerified) {
-    //   identified = true;
-    //   return next();
-    // } else {
-    //   req.flash("error", "You need to verify your e-mail before posting.");
-    // }
-    identified = true;
+    if (req.user.isVerified) {
+      identified = true;
+      return next();
+    } else {
+      req.flash("error", "You need to verify your e-mail before posting.");
+    }
   }
   if (identified) {
     return next();
