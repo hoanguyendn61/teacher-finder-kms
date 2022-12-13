@@ -4,9 +4,9 @@ const passport = require("passport");
 const User = require("../models/user");
 const Teacher = require("../models/teacher");
 const async = require("async");
-const nodemailer = require("nodemailer");
 const crypto = require("crypto");
-const middleware = require("../middleware");
+const smtpTransport = require("../utils/email");
+
 const { upload, cloudinary } = require("../utils/uploadImage");
 //INDEX - show all Teachers
 router.get("/", function (req, res) {
@@ -73,7 +73,29 @@ router.post("/register", function (req, res, next) {
             });
           },
           function (token, user, done) {
-            res.redirect("/login");
+            const mailOptions = {
+              to: user.email,
+              from: "noreply@teacherfinder.com",
+              subject: "TeacherFinder Account Verification",
+              text:
+                "You are receiving this because you (or someone else) has registered a new account.\n\n" +
+                "Please click on the following link, or paste this into your browser to complete the process:\n\n" +
+                "http://" +
+                req.headers.host +
+                "/verified/" +
+                token +
+                "\n\n" +
+                "If you did not request this, please ignore this email.\n",
+            };
+            smtpTransport.sendMail(mailOptions, function (err) {
+              req.flash(
+                "success",
+                "An e-mail has been sent to " +
+                  user.email +
+                  " . Please verify your account before using the system."
+              );
+              done(err, "done");
+            });
           },
         ],
         function (err) {
@@ -203,6 +225,31 @@ router.post("/forgot", function (req, res, next) {
           });
         });
       },
+      function (token, user, done) {
+        const mailOptions = {
+          to: user.email,
+          from: "noreply@teacherfinder.com",
+          subject: "TeacherFinder Password Reset",
+          text:
+            "You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
+            "Please click on the following link, or paste this into your browser to complete the process:\n\n" +
+            "http://" +
+            req.headers.host +
+            "/reset/" +
+            token +
+            "\n\n" +
+            "If you did not request this, please ignore this email and your password will remain unchanged.\n",
+        };
+        smtpTransport.sendMail(mailOptions, function (err) {
+          req.flash(
+            "success",
+            "An e-mail has been sent to " +
+              user.email +
+              " with further instructions."
+          );
+          done(err, "done");
+        });
+      },
     ],
     function (err) {
       if (err) return next(err);
@@ -278,6 +325,10 @@ router.post("/reset/:token", function (req, res) {
           }
         );
       },
+      function (user, done) {
+        req.flash("success", "Success! Your password has been changed.");
+        done(null);
+      },
     ],
     function (err) {
       if (err) {
@@ -342,6 +393,31 @@ router.post("/verify", function (req, res, next) {
           });
         });
       },
+      function (token, user, done) {
+        const mailOptions = {
+          to: user.email,
+          from: "noreply@teacherfinder.com",
+          subject: "TeacherFinder - new verification code",
+          text:
+            "You are receiving this because you (or someone else) have requested a new verification code for your account.\n\n" +
+            "Please click on the following link, or paste this into your browser to complete the process:\n\n" +
+            "http://" +
+            req.headers.host +
+            "/verified/" +
+            token +
+            "\n\n" +
+            "If you did not request this, please ignore this email.\n",
+        };
+        smtpTransport.sendMail(mailOptions, function (err) {
+          req.flash(
+            "success",
+            "An e-mail has been sent to " +
+              user.email +
+              " with further instructions."
+          );
+          done(err, "done");
+        });
+      },
     ],
     function (err) {
       if (err) return next(err);
@@ -400,6 +476,10 @@ router.get("/verified/:token", function (req, res) {
               }
             }
           );
+        },
+        function (user, done) {
+          req.flash("success", "Success! Your account has been verified.");
+          done(null);
         },
       ],
       function (err) {
