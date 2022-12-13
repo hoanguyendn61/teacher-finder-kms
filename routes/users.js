@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const middleware = require("../middleware");
 const { upload, cloudinary } = require("../utils/uploadImage");
-
+const User = require("../models/user");
 // USER PROFILE
 router.get("/:id", function (req, res) {
   User.findById(req.params.id, function (err, foundUser) {
